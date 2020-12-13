@@ -19,24 +19,42 @@ console.log('Result', available[min] * diff[min])
 
 // Part two
 
+available = [1789,37,47,1889]
+chars = [1789,37,47,1889]
+
+let maxIndex = 0
+val = available[0]
+for (let i = 1; i < available.length; i++) {
+    if (available[i] > val) {
+        val = available[i]
+        maxIndex = i
+    }
+}
+
 let offset = []
 for (let i = 0; i < chars.length; i++)
     if (chars[i] !== 'x')
         offset.push(i)
 
-console.log(offset)
+console.log(available, offset, 'Max', available[maxIndex])
+
+// Prepare to wait: 3 hours if split over 4 cores
+// Result: 807435693182510
 
 let k = 1
 do
 {
     let ok = true
-    for (let i = 1; i < available.length; i++)
-        if ((available[0] * k + offset[i]) % available[i] !== 0) {
+    for (let i = 0; i < available.length; i++) {
+        if (i === maxIndex)
+            continue
+        if ((available[maxIndex] * k + offset[i] - offset[maxIndex]) % available[i] !== 0) {
             ok = false
             break
         }
+    }
     if (ok) {
-        console.log('Found', k * available[0])
+        console.log('Found', k * available[maxIndex] - offset[maxIndex])
         break
     }
     k++
