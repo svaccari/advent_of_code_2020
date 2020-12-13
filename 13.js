@@ -19,9 +19,6 @@ console.log('Result', available[min] * diff[min])
 
 // Part two
 
-available = [1789,37,47,1889]
-chars = [1789,37,47,1889]
-
 let maxIndex = 0
 val = available[0]
 for (let i = 1; i < available.length; i++) {
