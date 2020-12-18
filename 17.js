@@ -1,4 +1,3 @@
-const { DH_CHECK_P_NOT_SAFE_PRIME } = require('constants')
 const { readFileSync } = require('fs')
 
 const data = readFileSync(__filename.replace('js', 'txt')).toString().replace(/\r\n/g, '\n').split('\n')
