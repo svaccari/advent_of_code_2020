@@ -18,7 +18,7 @@ for (d of data) {
     }
 }
 
-// Calculate borders
+// Calculate borders: 0 = top, 1 = bottom, 2 = left, 3 = right
 
 for (let t of tiles) {
     t.borders.push(t.data[0])
@@ -41,15 +41,25 @@ for (let i = 0; i < tiles.length - 1; i++) {
         b = tiles[j]
         if (a.index === b.index)
             continue
+        let indexA = 0
         for (let ab of a.borders) {
             reverseA = [...ab].reverse().join('')
+            let indexB = 0
             for (let bb of b.borders) {
                 reverseB = [...bb].reverse().join('')
-                if (ab === bb || ab === reverseB || bb === reverseA) {
-                    a.matching.push(b.index)
-                    b.matching.push(a.index)
+                if (ab === bb) {
+                    a.matching.push({ tile: b.index, borders: [indexA, indexB]})
+                    b.matching.push({ tile: a.index, borders: [indexB, indexA]})
+                } else if (ab === reverseB) {
+                    a.matching.push({ tile: b.index, borders: [indexA, -indexB]})
+                    b.matching.push({ tile: a.index, borders: [-indexB, indexA]})
+                } else if (bb === reverseA) {
+                    a.matching.push({ tile: b.index, borders: [-indexA, indexB]})
+                    b.matching.push({ tile: a.index, borders: [indexB, -indexA]})
                 }
+                indexB++
             }
+            indexA++
         }
     }
 }
@@ -59,9 +69,16 @@ for (let i = 0; i < tiles.length - 1; i++) {
 let mul = 1
 for (let t of tiles) {
     if (t.matching.length === 2) {
-        console.log('Corner', t.index)
+        console.log('Corner', t.index, t.matching)
         mul *= t.index
     }
 }
 
 console.log('Mult', mul)
+
+// Part two
+// 3061 = bottom right
+// 3779 = top left
+// 3329 = 
+
+console.log(tiles[0].matching)

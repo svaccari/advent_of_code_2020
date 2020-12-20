@@ -70,17 +70,3 @@ for (let s of strings) {
 }
 
 console.log('Valid', valid)
-
-// Part two
-
-const data2 = readFileSync('19_part_two.txt').toString().replace(/\r\n/g, '\n').split('\n')
-rules = getRules(data2)
-
-valid = 0
-for (let s of strings) {
-    index = 0
-    if (validate(s, 0) && index === s.length)
-        valid++
-}
-
-console.log('Valid part two', valid) // 275 < x
