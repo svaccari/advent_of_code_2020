@@ -37,34 +37,23 @@ class Node {
     }
 }
 
-function getNode(list, x) {
-    let tmp = list
-    while (tmp.val !== x)
-        tmp = tmp.next
-    return tmp
-}
-
 function movePartTwo() {
     let removed = current.next
     current.next = removed.next.next.next // jump 3 nodes
     removedValues = [removed.val, removed.next.val, removed.next.next.val]
-    let destination = current.val - 1
-    if (destination < 1)
-        destination = max
-    while (removedValues.includes(destination)) {
-        destination--
-        if (destination < 1)
+    let destination = current.val
+    do {
+        if (--destination < 1)
             destination = max
-    }
-    let destinationNode = getNode(current, destination)
-    let tmp = destinationNode.next
+    } while (removedValues.includes(destination))
+    let destinationNode = map.get(destination)
+    let tmp = destinationNode.next // put back the 3 removed nodes
     destinationNode.next = removed
     removed.prev = destinationNode
     removed.next.next.next = tmp
     current = current.next
 }
 
-//input = [3, 8, 9, 1, 2, 5, 4, 6, 7] // test
 input = [3, 2, 6, 5, 1, 9, 4, 7, 8]
 
 for (let i = 10; i <= 1000000; i++)
@@ -72,10 +61,13 @@ for (let i = 10; i <= 1000000; i++)
 
 max = input.length
 
-let list = new Node(input[0])
-let cursor = list
-for (let i = 1; i < max; i++) {
+let map = new Map()
+let list = null, cursor = null
+for (let i = 0; i < max; i++) {
     let n = new Node(input[i])
+    if (i === 0)
+        list = cursor = n
+    map.set(input[i], n)
     cursor.next = n
     n.prev = cursor
     cursor = n
@@ -84,24 +76,13 @@ list.prev = cursor // link head to tail
 cursor.next = list // link tail to head
 current = list
 
-console.log('Input length', max)
-
 for (let i = 0; i < 10000000; i++) {
-    if (i % 100000 === 0)
+    if (i % 1000000 === 0)
         console.log('Done', i)
     movePartTwo()
-/*    console.log(list.val,
-        list.next.val,
-        list.next.next.val,
-        list.next.next.next.val,
-        list.next.next.next.next.val,
-        list.next.next.next.next.next.val,
-        list.next.next.next.next.next.next.val,
-        list.next.next.next.next.next.next.next.val,
-        list.next.next.next.next.next.next.next.next.val)*/
 }
 
-let node1 = getNode(list, 1)
+let node1 = map.get(1)
 let v1 = node1.next.val
 let v2 = node1.next.next.val
-console.log('Part two', v1, v2, v1 * v2)
+console.log('Part two', v1, v2, v1 * v2) // 205375 216878 44541319250
