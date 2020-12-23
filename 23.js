@@ -1,9 +1,5 @@
 let input = [3, 2, 6, 5, 1, 9, 4, 7, 8]
 let current = 3
-
-//input = [3, 8, 9, 1, 2, 5, 4, 6, 7] // test
-//current = 3
-
 let max = input.length
 
 function move() {
